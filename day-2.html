@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    (function () {
+      function getResultForList() {
+        let list = document.querySelector("pre").innerText.split(",");
+        for (var i = 0; i < list.length; i++) {
+          list[i] = +list[i];
+        }
+
+        list[1] = 0;
+        list[2] = 0;
+
+
+        const limit = 99;
+        let numberFound = false;
+        const expectedNumber = 19690720;
+        let resultList;
+
+        while (list[1] <= limit) {
+          list[2] = 0;
+          while (list[2] <= limit) {
+            resultList = executeCode(list);
+            list[2]++;
+
+            if (resultList[0] === expectedNumber) {
+              numberFound = true;
+              break;
+            }
+          }
+
+          if (numberFound) {
+            break;
+          }
+          list[1]++;
+        }
+
+        console.log("resultList[0]", resultList[0]);
+        console.log("noun + verb", 100 * resultList[1] + resultList[2]);
+      }
+
+      function executeCode(originalList) {
+        let list = [].concat(originalList);
+        let index = 0;
+
+        while (index < list.length) {
+          let current = list[index];
+          let first, second;
+          let shouldBreak = false;
+
+          switch (current) {
+            case 1:
+              first = list[list[index + 1]];
+              second = list[list[index + 2]];
+              list[list[index + 3]] = first + second;
+              index += 4;
+              break;
+            case 2:
+              first = list[list[index + 1]];
+              second = list[list[index + 2]];
+              list[list[index + 3]] = first * second;
+              index += 4;
+              break;
+            default:
+              index = list.length;
+              shouldBreak = true;
+              break;
+
+          }
+
+          if (shouldBreak) {
+            break;
+          }
+        }
+        return list;
+      }
+
+
+
+      getResultForList();
+    })();
+  </script>
+
+</body>
+
+</html>

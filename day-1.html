@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    (function () {
+      function getFuelForModulesList() {
+        let modulesMassList = document.querySelector("pre").innerText.split("\n");
+        let modulesTotalFuel = 0;
+        for (var i = 0; i < modulesMassList.length; i++) {
+          modulesTotalFuel += getFuelForModule(+modulesMassList[i])
+        }
+
+        console.log("modulesTotalFuel", modulesTotalFuel);
+      }
+
+      function getFuelForModule(moduleMass) {
+        let fuelForModule = Math.floor(moduleMass / 3) - 2;
+        let result = Math.max(fuelForModule, 0);
+
+        console.log("fuelForModule", fuelForModule);
+
+        while (fuelForModule > 0) {
+          let fuelForThis = Math.floor(fuelForModule / 3) - 2;
+          console.log("fuelForThis", fuelForThis);
+
+          if (fuelForThis > 0) {
+            result += fuelForThis;
+          }
+
+          fuelForModule = fuelForThis;
+        }
+
+        console.log("result", result)
+        return result;
+      }
+
+      getFuelForModulesList();
+    })();
+  </script>
+
+</body>
+
+</html>
