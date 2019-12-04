@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    (function () {
+        let passwordLength = 6
+        let minPassword = 128392;
+        let maxPassword = 643281;
+
+        // Two adjacent digits are the same
+        // the two adjacent matching digits are not part of a larger group of matching digits.
+        // Going from left to right, the digits never decrease; they only ever increase or stay the same (like 111123 or 135679).
+
+        let possiblePasswords = [];
+
+        for (let i = minPassword; i <= maxPassword; i++) {
+            let passString = (i + "").split("");
+            let lastChar = null;
+
+            let adjacentArray = [];
+            let lastAdjacent;
+            let rightAdjacentFound = false;
+
+            let rightOrder = true;
+            
+
+            for (let j = 0; j < passwordLength; j++) {
+                let passChar = +passString[j];
+
+                if (lastChar === passChar) {
+                    if (!lastAdjacent) {
+                        lastAdjacent = "" + lastChar + passChar;
+                    } else {
+                        lastAdjacent += passChar;
+                    }
+
+                    if (j + 1 === passwordLength) {
+                        adjacentArray.push(lastAdjacent);
+                    }                  
+                } else {
+                    if (lastAdjacent) {
+                        adjacentArray.push(lastAdjacent);
+                    }
+
+                    lastAdjacent = null;
+                }
+
+                if (lastChar && passChar < lastChar) {
+                    rightOrder = false;
+                    break;
+                }
+
+                lastChar = passChar
+            }
+
+            for (let i = 0; i < adjacentArray.length; i++) {
+                if (adjacentArray[i].length === 2) {
+                    rightAdjacentFound = true;
+                    break;
+                }
+            }
+
+
+            if (rightAdjacentFound && rightOrder) {
+                possiblePasswords.push(i);
+            }
+        }
+
+        console.log("possiblePasswords", possiblePasswords)
+    })();
+  </script>
+
+</body>
+
+</html>
