@@ -49,7 +49,7 @@
 
           parameterModes = Math.floor(parameterModes / 10);
           let thirdParameterMode = parameterModes % 10;
-          let thirdParameter;
+          let third;
 
           let first, second;
           let shouldBreak = false;
@@ -71,13 +71,55 @@
               break;
             case 3:
               parameter = list[index + 1];
-              list[parameter] = 1;
+              list[parameter] = 5;
               index += 2;
               break;
             case 4:
               parameter = list[index + 1];
               index += 2;
               console.log(`list[${index + 1}] is ${list[parameter]}`);
+              break;
+            case 5:
+              first = getParameter(list, list[index + 1], firstParameterMode);
+              second = getParameter(list, list[index + 2], secondParameterMode);
+
+              if (first !== 0) {
+                index = second;
+              } else {
+                index += 3;
+              }
+              break;
+            case 6:
+              first = getParameter(list, list[index + 1], firstParameterMode);
+              second = getParameter(list, list[index + 2], secondParameterMode);
+
+              if (first === 0) {
+                index = second;
+              } else {
+                index += 3;
+              }
+              break;
+            case 7:
+              first = getParameter(list, list[index + 1], firstParameterMode);
+              second = getParameter(list, list[index + 2], secondParameterMode);
+              third = list[index + 3];
+              if (first < second) {
+                list[third] = 1;
+              } else {
+                list[third] = 0;
+              }
+              index += 3;
+              break;
+            case 8:
+              first = getParameter(list, list[index + 1], firstParameterMode);
+              second = getParameter(list, list[index + 2], secondParameterMode);
+              third = list[index + 3];
+              if (first === second) {
+                list[third] = 1;
+              } else {
+                list[third] = 0;
+              }
+              index += 3;
               break;
             case 99:
               index = list.length;
