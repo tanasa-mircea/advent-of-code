@@ -12,16 +12,82 @@
   <script>
     (function () {
       var input = getInput();
-      var tree = buildTree(input);
+      var dictionary = buildDictionary(input);
+      var total = 0;
+      var dictionaryKeys = Object.keys(dictionary);
 
-      function buildTree(input) {
-        let tree = [];
+      var goToResult = goToSourceTarget("YOU", "SAN", dictionary);
+      // for (let i = 0; i < dictionaryKeys.length; i++) {
+      //   let element = dictionary[dictionaryKeys[i]];
+      //   let totalForElement = getTotal(element, dictionary, 0)
+      //   total += totalForElement;
+      // }
+
+      console.log("goToResult", goToResult);
+
+      function goToSourceTarget(source, target, dictionary) {
+        let sourceElement = dictionary[source];
+        let targetElement = dictionary[target];
+        let sourceOrbitee = dictionary[sourceElement.orbiting[0]];
+        let targetOrbitee = dictionary[targetElement.orbiting[0]];
+        let result = goTo(sourceOrbitee, targetOrbitee, dictionary, 0);
+
+        return result;
+      }
+
+      function goTo(sourceOrbitee, targetOrbitee, dictionary, total) {
+        if (!sourceOrbitee.orbiting.length) {
+          console.log("test")
+          return total;
+        }
+
+        total++;
+
+        if (sourceOrbitee.orbitedBy[0] === targetOrbitee.name) {
+          return total;
+        }
+
+        return goTo(dictionary[sourceOrbitee.orbiting[0]], targetOrbitee, dictionary, total);
+      }
+
+      function buildDictionary(input) {
+        let dictionary = {};
         for (let i = 0; i < input.length; i++) {
           let pair = input[i].split(")");
+          let orbitee = pair[0];
+          let orbiter = pair[1];
 
+          if (!dictionary[orbitee]) {
+            dictionary[orbitee] = {
+              orbiting: [],
+              orbitedBy: [],
+              name: orbitee
+            }
+          }
 
+          if (!dictionary[orbiter]) {
+            dictionary[orbiter] = {
+              orbiting: [],
+              orbitedBy: [],
+              name: orbiter
+            }
+          }
+
+          dictionary[orbitee].orbitedBy.push(orbiter);
+          dictionary[orbiter].orbiting.push(orbitee);
         }
-        return tree;
+
+        return dictionary;
+      }
+
+      function getTotal(element, dictionary, total) {
+        if (!element.orbiting.length) {
+          return total;
+        }
+
+
+        total++;
+        return getTotal(dictionary[element.orbiting[0]], dictionary, total);
       }
 
       function getInput() {
